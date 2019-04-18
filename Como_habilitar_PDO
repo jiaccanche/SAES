@@ -1,0 +1,3 @@
+URL ejemplo de conección de BD con yii: https://www.yiiframework.com/doc/guide/2.0/es/start-databases
+Se tiene que habilitar la extensión PDO_POSTGRES que esta en el archivo php.ini, pueden buscar por extensión, para verificar si se habilito
+verifican en el dashboard le pican a phpinfo y buscan PDO_POSTGRES si sale, entonces se activo.

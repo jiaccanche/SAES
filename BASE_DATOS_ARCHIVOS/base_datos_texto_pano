@@ -1,0 +1,557 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.2
+-- Dumped by pg_dump version 11.2
+
+-- Started on 2019-04-17 21:46:22
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 206 (class 1259 OID 16463)
+-- Name: check_t; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.check_t (
+    num_empleado bigint NOT NULL,
+    hora_e time without time zone,
+    hora_s time without time zone,
+    fecha_jornada date,
+    entrada_salida boolean
+);
+
+
+ALTER TABLE public.check_t OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 16404)
+-- Name: empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.empleado (
+    num_empleado integer NOT NULL,
+    nombre character varying(50),
+    telefono character varying(10),
+    correo character varying(50),
+    password character varying(8),
+    estatus character varying(50)
+);
+
+
+ALTER TABLE public.empleado OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 16402)
+-- Name: empleado_num_empleado_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.empleado_num_empleado_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.empleado_num_empleado_seq OWNER TO postgres;
+
+--
+-- TOC entry 2887 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: empleado_num_empleado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.empleado_num_empleado_seq OWNED BY public.empleado.num_empleado;
+
+
+--
+-- TOC entry 207 (class 1259 OID 16473)
+-- Name: genera; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.genera (
+    num_incidente bigint NOT NULL,
+    num_empleado bigint NOT NULL,
+    fecha_asignacion date
+);
+
+
+ALTER TABLE public.genera OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 16443)
+-- Name: horario; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.horario (
+    num_empleado bigint NOT NULL,
+    num_dia bigint NOT NULL,
+    entrada time without time zone,
+    salida time without time zone
+);
+
+
+ALTER TABLE public.horario OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 16426)
+-- Name: incidente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.incidente (
+    num_incidente integer NOT NULL,
+    estado character varying(50),
+    descripcion text
+);
+
+
+ALTER TABLE public.incidente OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16424)
+-- Name: incidente_num_incidente_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.incidente_num_incidente_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.incidente_num_incidente_seq OWNER TO postgres;
+
+--
+-- TOC entry 2888 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: incidente_num_incidente_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.incidente_num_incidente_seq OWNED BY public.incidente.num_incidente;
+
+
+--
+-- TOC entry 199 (class 1259 OID 16415)
+-- Name: periodo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.periodo (
+    num_periodo integer NOT NULL,
+    tipo character varying(40),
+    descripcion text,
+    fecha_ini timestamp without time zone,
+    fecha_fin timestamp without time zone
+);
+
+
+ALTER TABLE public.periodo OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 16413)
+-- Name: periodo_num_periodo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.periodo_num_periodo_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.periodo_num_periodo_seq OWNER TO postgres;
+
+--
+-- TOC entry 2889 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: periodo_num_periodo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.periodo_num_periodo_seq OWNED BY public.periodo.num_periodo;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16437)
+-- Name: puesto; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.puesto (
+    num_puesto integer NOT NULL,
+    descripcion character varying(60)
+);
+
+
+ALTER TABLE public.puesto OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16435)
+-- Name: puesto_num_puesto_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.puesto_num_puesto_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.puesto_num_puesto_seq OWNER TO postgres;
+
+--
+-- TOC entry 2890 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: puesto_num_puesto_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.puesto_num_puesto_seq OWNED BY public.puesto.num_puesto;
+
+
+--
+-- TOC entry 205 (class 1259 OID 16453)
+-- Name: tabulador; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tabulador (
+    num_puesto bigint NOT NULL,
+    salario_pe double precision,
+    fecha_cambio date
+);
+
+
+ALTER TABLE public.tabulador OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 16486)
+-- Name: tiene; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tiene (
+    num_periodo bigint NOT NULL,
+    num_empleado bigint NOT NULL,
+    fecha_asignacion date
+);
+
+
+ALTER TABLE public.tiene OWNER TO postgres;
+
+--
+-- TOC entry 2725 (class 2604 OID 16407)
+-- Name: empleado num_empleado; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado ALTER COLUMN num_empleado SET DEFAULT nextval('public.empleado_num_empleado_seq'::regclass);
+
+
+--
+-- TOC entry 2727 (class 2604 OID 16429)
+-- Name: incidente num_incidente; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incidente ALTER COLUMN num_incidente SET DEFAULT nextval('public.incidente_num_incidente_seq'::regclass);
+
+
+--
+-- TOC entry 2726 (class 2604 OID 16418)
+-- Name: periodo num_periodo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.periodo ALTER COLUMN num_periodo SET DEFAULT nextval('public.periodo_num_periodo_seq'::regclass);
+
+
+--
+-- TOC entry 2728 (class 2604 OID 16440)
+-- Name: puesto num_puesto; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.puesto ALTER COLUMN num_puesto SET DEFAULT nextval('public.puesto_num_puesto_seq'::regclass);
+
+
+--
+-- TOC entry 2879 (class 0 OID 16463)
+-- Dependencies: 206
+-- Data for Name: check_t; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.check_t (num_empleado, hora_e, hora_s, fecha_jornada, entrada_salida) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2870 (class 0 OID 16404)
+-- Dependencies: 197
+-- Data for Name: empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.empleado (num_empleado, nombre, telefono, correo, password, estatus) FROM stdin;
+1	Jorge Cache	9991151968	jcanchecauich@gmail.com	12345	ACTIVO
+2	Eliezer Couho	9991151961	eliefer@gmail.com	12345	ACTIVO
+3	Mónica Brito	9991151962	monibin@gmail.com	12345	ACTIVO
+4	Rosaura Garcilazo	9991151963	rosi@gmail.com	12345	ACTIVO
+5	Hilda Cruz	9991151964	hilda@gmail.com	12345	ACTIVO
+\.
+
+
+--
+-- TOC entry 2880 (class 0 OID 16473)
+-- Dependencies: 207
+-- Data for Name: genera; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.genera (num_incidente, num_empleado, fecha_asignacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2877 (class 0 OID 16443)
+-- Dependencies: 204
+-- Data for Name: horario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.horario (num_empleado, num_dia, entrada, salida) FROM stdin;
+1	1	07:30:00	06:30:00
+1	2	07:30:00	06:30:00
+1	3	07:30:00	06:30:00
+1	4	07:30:00	06:30:00
+1	5	07:30:00	06:30:00
+\.
+
+
+--
+-- TOC entry 2874 (class 0 OID 16426)
+-- Dependencies: 201
+-- Data for Name: incidente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.incidente (num_incidente, estado, descripcion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2872 (class 0 OID 16415)
+-- Dependencies: 199
+-- Data for Name: periodo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.periodo (num_periodo, tipo, descripcion, fecha_ini, fecha_fin) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2876 (class 0 OID 16437)
+-- Dependencies: 203
+-- Data for Name: puesto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.puesto (num_puesto, descripcion) FROM stdin;
+1	Ingeniero en manufactura
+2	Ingeniero de software
+3	Ingeniero civil
+4	Cocinero
+5	Lincenciado
+\.
+
+
+--
+-- TOC entry 2878 (class 0 OID 16453)
+-- Dependencies: 205
+-- Data for Name: tabulador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tabulador (num_puesto, salario_pe, fecha_cambio) FROM stdin;
+1	100.400000000000006	2019-04-17
+2	132.400000000000006	2019-04-17
+3	1232.40000000000009	2019-04-17
+4	122.400000000000006	2019-04-17
+5	112.400000000000006	2019-04-17
+\.
+
+
+--
+-- TOC entry 2881 (class 0 OID 16486)
+-- Dependencies: 208
+-- Data for Name: tiene; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tiene (num_periodo, num_empleado, fecha_asignacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2891 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: empleado_num_empleado_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.empleado_num_empleado_seq', 5, true);
+
+
+--
+-- TOC entry 2892 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: incidente_num_incidente_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.incidente_num_incidente_seq', 1, false);
+
+
+--
+-- TOC entry 2893 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: periodo_num_periodo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.periodo_num_periodo_seq', 1, false);
+
+
+--
+-- TOC entry 2894 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: puesto_num_puesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.puesto_num_puesto_seq', 5, true);
+
+
+--
+-- TOC entry 2730 (class 2606 OID 16409)
+-- Name: empleado empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado
+    ADD CONSTRAINT empleado_pkey PRIMARY KEY (num_empleado);
+
+
+--
+-- TOC entry 2734 (class 2606 OID 16434)
+-- Name: incidente incidente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incidente
+    ADD CONSTRAINT incidente_pkey PRIMARY KEY (num_incidente);
+
+
+--
+-- TOC entry 2740 (class 2606 OID 16467)
+-- Name: check_t ocupa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.check_t
+    ADD CONSTRAINT ocupa_pkey PRIMARY KEY (num_empleado);
+
+
+--
+-- TOC entry 2732 (class 2606 OID 16423)
+-- Name: periodo periodo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.periodo
+    ADD CONSTRAINT periodo_pkey PRIMARY KEY (num_periodo);
+
+
+--
+-- TOC entry 2736 (class 2606 OID 16442)
+-- Name: puesto puesto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.puesto
+    ADD CONSTRAINT puesto_pkey PRIMARY KEY (num_puesto);
+
+
+--
+-- TOC entry 2738 (class 2606 OID 16457)
+-- Name: tabulador tabulador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tabulador
+    ADD CONSTRAINT tabulador_pkey PRIMARY KEY (num_puesto);
+
+
+--
+-- TOC entry 2743 (class 2606 OID 16468)
+-- Name: check_t check_t_num_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.check_t
+    ADD CONSTRAINT check_t_num_empleado_fkey FOREIGN KEY (num_empleado) REFERENCES public.empleado(num_empleado);
+
+
+--
+-- TOC entry 2744 (class 2606 OID 16476)
+-- Name: genera genera_num_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.genera
+    ADD CONSTRAINT genera_num_empleado_fkey FOREIGN KEY (num_empleado) REFERENCES public.empleado(num_empleado);
+
+
+--
+-- TOC entry 2745 (class 2606 OID 16481)
+-- Name: genera genera_num_incidente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.genera
+    ADD CONSTRAINT genera_num_incidente_fkey FOREIGN KEY (num_incidente) REFERENCES public.incidente(num_incidente);
+
+
+--
+-- TOC entry 2741 (class 2606 OID 16446)
+-- Name: horario horario_num_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.horario
+    ADD CONSTRAINT horario_num_empleado_fkey FOREIGN KEY (num_empleado) REFERENCES public.empleado(num_empleado);
+
+
+--
+-- TOC entry 2742 (class 2606 OID 16458)
+-- Name: tabulador tabulador_num_puesto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tabulador
+    ADD CONSTRAINT tabulador_num_puesto_fkey FOREIGN KEY (num_puesto) REFERENCES public.puesto(num_puesto);
+
+
+--
+-- TOC entry 2747 (class 2606 OID 16494)
+-- Name: tiene tiene_num_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tiene
+    ADD CONSTRAINT tiene_num_empleado_fkey FOREIGN KEY (num_empleado) REFERENCES public.empleado(num_empleado);
+
+
+--
+-- TOC entry 2746 (class 2606 OID 16489)
+-- Name: tiene tiene_num_periodo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tiene
+    ADD CONSTRAINT tiene_num_periodo_fkey FOREIGN KEY (num_periodo) REFERENCES public.periodo(num_periodo);
+
+
+-- Completed on 2019-04-17 21:46:23
+
+--
+-- PostgreSQL database dump complete
+--
+
